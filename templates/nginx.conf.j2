@@ -9,6 +9,19 @@ events {
     worker_connections 1024;
 }
 
+# Don't apply rate limiting to whitelisted IPs
+geo $limit {
+    default 1;
+    {% for dev_user_ip in dev_user_ips.split(",") %}
+    {{ dev_user_ip }} 0;
+    {% endfor %}
+}
+
+map $limit $limit_key {
+    0 "";
+    1 $binary_remote_addr;
+}
+
 http {
     # Set DNS resolver address
     resolver {{ resolver_ip }} valid=300s;
@@ -46,6 +59,10 @@ http {
 
     # Set max request size (up to 4 files x 10Mb size limit)
     client_max_body_size 40m;
+
+    # Basic rate limiting (return 429 Too Many Requests instead of default 503)
+    limit_req_zone $limit_key zone=dm_limit:10m rate=10r/s;
+    limit_req_status 429;
 
     include /etc/nginx/mime.types;
     default_type application/octet-stream;

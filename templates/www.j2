@@ -10,6 +10,9 @@ server {
 
     set $frontend_url "{{ frontend_url }}";
 
+    # Basic rate limiting
+    limit_req zone=dm_limit burst=20 nodelay;
+
     location /robots.txt {
         alias {{ static_files_root }}/robots_www.txt;
     }
