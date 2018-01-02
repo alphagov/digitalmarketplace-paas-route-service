@@ -12,6 +12,11 @@ server {
 
     # Basic rate limiting
     limit_req zone=dm_limit burst=20 nodelay;
+    error_page 429 @too_many_requests;
+    location @too_many_requests {
+        add_header Retry-After 300;
+        rewrite ^(.*)$ /too_many_requests.html break;
+    }
 
     location /robots.txt {
         alias {{ static_files_root }}/robots_www.txt;
