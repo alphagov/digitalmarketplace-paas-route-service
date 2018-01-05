@@ -2,6 +2,7 @@
 server {
     listen 80;
     server_name www.*;
+    root {{ static_files_root }};
 
     {% for user_ip in user_ips.split(",") %}
     allow {{ user_ip }};
@@ -10,8 +11,16 @@ server {
 
     set $frontend_url "{{ frontend_url }}";
 
+    # Basic rate limiting
+    limit_req zone=dm_limit burst=40 nodelay;
+    error_page 429 @too_many_requests;
+    location @too_many_requests {
+        add_header Retry-After 300 always;
+        rewrite ^(.*)$ /too_many_requests.html break;
+    }
+
     location /robots.txt {
-        alias {{ static_files_root }}/robots_www.txt;
+        rewrite ^(.*)$ /robots_www.txt break;
     }
 
     location / {
