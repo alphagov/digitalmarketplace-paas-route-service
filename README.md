@@ -2,6 +2,15 @@
 
 This is an Nginx application which acts as a proxy for all Digital Marketplace PaaS applications and provides an authentication layer.
 
+The router app also handles:
+
+- IP restrictions for admin pages
+- robots.txt
+- rate limiting
+- 'maintenance' mode (routing all requests to a static page)
+- gzip settings
+
+
 ## Testing nginx changes locally
 
 To test changes to the nginx configuration, use Docker and `docker-compose` to build a new router image.
