@@ -1,14 +1,23 @@
 # Digital Marketplace PaaS Router
 
-This is an Nginx application which acts as a proxy for all Digital Marketplace PaaS applications and provides an authentication layer.
+This is an Nginx application which acts as a proxy for all Digital Marketplace PaaS applications.
+
+Requests are routed to the correct location based on the hostname:
+
+| Hostname | Destination app |
+| :--- | :--- |
+| `api.*` | API |
+| `search-api.*` | Search API |
+| `www.*` | Front end apps |
+| `assets.*` | S3 resources (or the front end apps, depending on the path) |
 
 The router app also handles:
-
-- IP restrictions for admin pages
-- robots.txt
-- rate limiting
-- 'maintenance' mode (routing all requests to a static page)
-- gzip settings
+- Forwarding request headers (and adding any required headers for the app, e.g. Authorization)
+- IP restrictions for `/admin` pages
+- Serving the `robots.txt` static page
+- Rate limiting
+- 'Maintenance' mode (routing all requests to a static page)
+- `gzip` settings for CSS and Javascript files
 
 
 ## Testing nginx changes locally
