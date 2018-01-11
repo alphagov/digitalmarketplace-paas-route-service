@@ -1,6 +1,27 @@
 # Digital Marketplace PaaS Router
 
-This is an Nginx application which acts as a proxy for all Digital Marketplace PaaS applications and provides an authentication layer.
+This is an Nginx application which acts as a proxy for all Digital Marketplace PaaS applications.
+
+Requests are routed to the correct location based on the hostname:
+
+| Hostname | Destination app |
+| :--- | :--- |
+| `api.*` | API |
+| `search-api.*` | Search API |
+| `www.*` | Front end apps |
+| `assets.*` | S3 resources (or the front end apps, depending on the path) |
+
+The router app also handles:
+- Forwarding request headers
+- Adding the Basic Auth header to frontend app requests (these apps' URLs cannot be accessed directly,
+and must go via the router app)
+- IP restrictions for `/admin` pages
+- Serving the `robots.txt` static page
+- Rate limiting
+- 'Maintenance' mode (routing all requests to a static page)
+- `gzip` settings for CSS and Javascript files
+
+The app-level nginx configurations can be found in the [Docker base repo](https://github.com/alphagov/digitalmarketplace-docker-base).
 
 ## Testing nginx changes locally
 
