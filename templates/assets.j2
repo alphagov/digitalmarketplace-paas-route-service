@@ -68,6 +68,10 @@ server {
     location /404 {
         {{ proxy_headers () }}
         proxy_set_header Authorization "Basic {{ app_auth }}";
+        if ($host ~* ^assets\.(.*)) {
+            set $host_with_www www.$1;
+            rewrite ^(.*)$ $scheme://$host_with_www$request_uri;
+        }
         proxy_pass $frontend_url;
     }
 
