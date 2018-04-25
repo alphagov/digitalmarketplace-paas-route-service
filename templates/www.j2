@@ -1,4 +1,9 @@
 {% from "_macros.j2" import proxy_headers with context %}
+
+upstream static_429_error {
+    server localhost:89;
+}
+
 server {
     listen 80;
     server_name www.*;
@@ -18,7 +23,10 @@ server {
     error_page 429 @too_many_requests;
     location @too_many_requests {
         add_header Retry-After 300 always;
-        rewrite ^(.*)$ /too_many_requests.html break;
+
+        # Cannot POST to static pages, so proxy to a dedicated server block using GET
+        proxy_method GET;
+        proxy_pass http://static_429_error;
     }
 
     location /robots.txt {
@@ -43,4 +51,12 @@ server {
 
         proxy_pass $frontend_url;
     }
+}
+
+# Listen on port 89 and serve a static_429_error page
+server {
+    listen 89;
+    server_name _;
+    root {{ static_files_root }};
+    rewrite ^(.*)$ /too_many_requests.html break;
 }
