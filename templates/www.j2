@@ -1,7 +1,7 @@
 {% from "_macros.j2" import proxy_headers with context %}
 
 upstream static_429_error {
-    server localhost:89;
+    server localhost:10823;
 }
 
 server {
@@ -53,9 +53,9 @@ server {
     }
 }
 
-# Listen on port 89 and serve a static_429_error page
+# Listen on port 10823 and serve a static_429_error page
 server {
-    listen 89;
+    listen 10823;
     server_name _;
     root {{ static_files_root }};
     rewrite ^(.*)$ /too_many_requests.html break;
