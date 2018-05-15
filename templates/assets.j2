@@ -1,4 +1,5 @@
 {% from "_macros.j2" import proxy_headers with context %}
+{% from "_macros.j2" import prepare_trace_header_values with context %}
 server {
     listen 80;
     server_name assets.*;
@@ -15,6 +16,8 @@ server {
     set $agreements_s3_url "{{ agreements_s3_url }}";
     set $communications_s3_url "{{ communications_s3_url }}";
     set $submissions_s3_url "{{ submissions_s3_url }}";
+
+    {{ prepare_trace_header_values() }}
 
     {{ proxy_headers() }}
 

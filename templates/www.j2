@@ -1,4 +1,5 @@
 {% from "_macros.j2" import proxy_headers with context %}
+{% from "_macros.j2" import prepare_trace_header_values with context %}
 
 upstream static_429_error {
     server localhost:10823;
@@ -28,6 +29,8 @@ server {
         proxy_method GET;
         proxy_pass http://static_429_error;
     }
+
+    {{ prepare_trace_header_values() }}
 
     location /robots.txt {
         rewrite ^(.*)$ /robots_www.txt break;

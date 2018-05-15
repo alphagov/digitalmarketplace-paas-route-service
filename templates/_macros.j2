@@ -1,3 +1,24 @@
+# `prepare_trace_header_values` should be injected into every `server` block.
+# It disables debug/trace headers if the remote address is an external (non-GDS/non-developer) IP.
+# The variables here are initialized in the root `http` context.
+
+{% macro prepare_trace_header_values() %}
+# Save the values of the X-B3-Sampled and X-B3-Flags headers so the variables are in scope for all subsequent blocks
+set $x_b3_sampled_value $http_x_b3_sampled;
+set $x_b3_flags_value $http_x_b3_flags;
+
+if ($strip_trace_headers) {
+  set $x_b3_sampled_value 0;
+  set $x_b3_flags_value 0;
+}
+{% endmacro %}
+
+
+# Any uses of `proxy_headers` must have a use of `prepare_trace_header_values` somewhere up the chain to properly
+# set the required variables for stripping debug/sampling headers.
+# We don't inline `prepare_trace_header_values` to this macro as `proxy_headers` might get used inside an `location`
+# context, wherein we try to avoid using `if` directives:
+# https://www.nginx.com/resources/wiki/start/topics/depth/ifisevil/
 {% macro proxy_headers() %}
 
 proxy_redirect http:// https://;
@@ -12,6 +33,9 @@ proxy_set_header X-Forwarded-Host "$http_host";
 
 proxy_set_header DM-Request-ID "";
 proxy_set_header X-Amz-Cf-Id "";
+
+proxy_set_header X-B3-Sampled $x_b3_sampled_value;
+proxy_set_header X-B3-Flags $x_b3_flags_value;
 
 # drop headers returned by the app server that shouldn't be forwarded to the client
 proxy_hide_header "Strict-Transport-Security";

@@ -58,6 +58,16 @@ http {
     limit_req_zone $post_remote_addr zone=dm_post_limit:10m rate=2r/s;
     limit_req_status 429;
 
+    # Set variable indicating to strip out trace/debug headers coming from external (non-GDS/non-dev) IPs
+
+    map $remote_addr $strip_trace_headers {
+      default 1;
+
+{% for dev_ip in dev_user_ips.split(",") %}
+      {{ dev_ip.split('/')[0] }} 0;
+{% endfor %}
+    }
+
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
 
