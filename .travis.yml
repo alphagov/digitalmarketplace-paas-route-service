@@ -1,0 +1,10 @@
+language: python
+sudo: false
+python:
+  - "3.6"
+services:
+  - docker
+script:
+  - make test-nginx
+notifications:
+  email: false

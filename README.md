@@ -25,7 +25,30 @@ The app-level nginx configurations can be found in the [Docker base repo](https:
 
 ## Testing nginx changes locally
 
-To test changes to the nginx configuration, use Docker and `docker-compose` to build a new router image.
+There are two ways to test changes to the nginx configuration:
+
+### make test-nginx
+
+Assuming you have [Docker](https://docs.docker.com/engine/installation/) installed:
+
+Running `make test-nginx` does the following:
+- builds a new Docker image from your local repo (using the `Dockerfile`)
+- starts running a container based on that image, using dummy environment variables
+- starts up nginx inside the image (this takes a few seconds)
+- runs `nginx -t` to check the config:
+
+        nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+        nginx: configuration file /etc/nginx/nginx.conf test is successful
+
+If the config test is successful, the container is stopped and removed. If there is a failure, the container
+is preserved for investigation.
+
+You can use `docker exec -i -t digitalmarketplacerouter_test /bin/bash` to look inside the container.
+
+
+### docker-compose
+
+This method uses Docker and `docker-compose` to build the router image.
 
 Assuming you have [Docker](https://docs.docker.com/engine/installation/) and [docker-compose](https://docs.docker.com/compose/install/) installed:
 
