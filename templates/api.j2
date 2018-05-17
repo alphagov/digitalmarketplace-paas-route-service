@@ -1,4 +1,5 @@
 {% from "_macros.j2" import proxy_headers with context %}
+{% from "_macros.j2" import prepare_trace_header_values with context %}
 server {
     listen 80;
     server_name api.*;
@@ -9,6 +10,8 @@ server {
     allow {{ dev_ip }};
     {% endfor %}
     deny all;
+
+    {{ prepare_trace_header_values() }}
 
     location / {
         {{ proxy_headers() }}
@@ -24,6 +27,8 @@ server {
     allow {{ dev_ip }};
     {% endfor %}
     deny all;
+
+    {{ prepare_trace_header_values() }}
 
     set $search_api_url "{{ search_api_url }}";
 
