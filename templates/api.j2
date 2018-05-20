@@ -6,14 +6,19 @@ server {
 
     set $api_url "{{ api_url }}";
 
-    {% for dev_ip in dev_user_ips.split(",") %}
-    allow {{ dev_ip }};
-    {% endfor %}
-    deny all;
-
     {{ prepare_trace_header_values() }}
 
     location / {
+        {% for dev_ip in dev_user_ips.split(",") %}
+        allow {{ dev_ip }};
+        {% endfor %}
+        deny all;
+
+        {{ proxy_headers() }}
+        proxy_pass $api_url;
+    }
+
+    location /callbacks {
         {{ proxy_headers() }}
         proxy_pass $api_url;
     }
