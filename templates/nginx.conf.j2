@@ -75,6 +75,10 @@ http {
 
     log_format access_json '{"logType": "nginx-access", '
                            ' "requestId": "$http_x_b3_traceid", '
+                           ' "spanId": "$http_x_b3_spanid", '
+                           ' "parentSpanId": "$http_x_b3_parentspanid", '
+                           ' "isSampled": "$http_x_b3_sampled", '
+                           ' "debugFlag": "$http_x_b3_flags", '
                            ' "remoteHost": "$remote_addr", '
                            ' "user": "$remote_user", '
                            ' "time": "$time_local", '
