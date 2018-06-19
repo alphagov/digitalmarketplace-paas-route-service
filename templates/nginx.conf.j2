@@ -74,7 +74,7 @@ http {
     # Logging Settings
 
     log_format access_json '{"logType": "nginx-access", '
-                           ' "requestId": "$upstream_http_dm_request_id", '
+                           ' "requestId": "$http_x_b3_traceid", '
                            ' "remoteHost": "$remote_addr", '
                            ' "user": "$remote_user", '
                            ' "time": "$time_local", '
