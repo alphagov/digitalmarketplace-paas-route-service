@@ -11,6 +11,11 @@ if ($strip_trace_headers) {
   set $x_b3_sampled_value 0;
   set $x_b3_flags_value 0;
 }
+
+# if "sampled" mode hasn't already been enabled, allow the result of $random_sample to make the final decision
+if ($x_b3_sampled_value = 0) {
+  set $x_b3_sampled_value $random_sample;
+}
 {% endmacro %}
 
 

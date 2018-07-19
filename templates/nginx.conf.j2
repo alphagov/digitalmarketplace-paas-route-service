@@ -68,6 +68,18 @@ http {
 {% endfor %}
     }
 
+    # nginx isn't very good at randomness, so use the value of the traceid header to drive our "random sampling"
+    # decision as it should have been chosen randomly enough upstream
+    map $http_x_b3_traceid $random_sample {
+        default 0;
+
+        # if the second and fourth nibbles of the traceid are 'f', indicate that sampling should be enabled for this
+        # request. should result in one in 256 requests being sampled. why two arbitrarily chosen nibbles? we don't
+        # want this selection to accidentally correlate with anything else that may be using traceid for a stochastic
+        # decision, and it's less likely anything else will have chosen exactly these nibbles
+        ~*^.f.f.* 1;
+    }
+
     include /etc/nginx/mime.types;
     default_type application/octet-stream;
 
