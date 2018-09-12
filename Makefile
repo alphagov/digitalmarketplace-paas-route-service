@@ -6,7 +6,7 @@ TEST_IMAGE_NAME := digitalmarketplace/test-router
 .PHONY: create-cdn-route-service
 create-cdn-route-service:
 	$(if ${DOMAIN},,$(error Must specify DOMAIN))
-	cf create-service cdn-route cdn-route router_cdn -c '{"headers": ["*"], "domain": "www.${DOMAIN},api.${DOMAIN},search-api.${DOMAIN},assets.${DOMAIN}"}'
+	cf create-service cdn-route cdn-route router_cdn -c '{"headers": ["*"], "domain": "www.${DOMAIN},api.${DOMAIN},search-api.${DOMAIN},antivirus-api.${DOMAIN},assets.${DOMAIN}"}'
 
 .PHONY: docker-build
 docker-build:
@@ -31,6 +31,7 @@ test-nginx:
 		-e DM_FRONTEND_URL=http://frontend-apps \
 		-e DM_API_URL=http://localhost:5000 \
 		-e DM_SEARCH_API_URL=http://localhost:5001 \
+		-e DM_ANTIVIRUS_API_URL=http://localhost:5008 \
 		-e DM_APP_AUTH=12345678 \
 		-e DM_DOCUMENTS_S3_URL=https://test-s3 \
 		-e DM_G7_DRAFT_DOCUMENTS_S3_URL=https://test-s3 \
