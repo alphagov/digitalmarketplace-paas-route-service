@@ -8,6 +8,7 @@ Requests are routed to the correct location based on the hostname:
 | :--- | :--- |
 | `api.*` | API |
 | `search-api.*` | Search API |
+| `antivirus-api.*` | Antivirus API |
 | `www.*` | Front end apps |
 | `assets.*` | S3 resources (or the front end apps, depending on the path) |
 

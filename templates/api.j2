@@ -42,3 +42,27 @@ server {
         proxy_pass $search_api_url;
     }
 }
+
+server {
+    listen 80;
+    server_name antivirus-api.*;
+
+    set $antivirus_api_url "{{ antivirus_api_url }}";
+
+    {{ prepare_trace_header_values() }}
+
+    location / {
+        {% for dev_ip in dev_user_ips.split(",") %}
+        allow {{ dev_ip }};
+        {% endfor %}
+        deny all;
+
+        {{ proxy_headers() }}
+        proxy_pass $antivirus_api_url;
+    }
+
+    location /callbacks {
+        {{ proxy_headers() }}
+        proxy_pass $antivirus_api_url;
+    }
+}

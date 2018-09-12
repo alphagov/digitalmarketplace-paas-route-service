@@ -14,6 +14,7 @@ services:
       - DM_FRONTEND_URL=http://frontend-apps
       - DM_API_URL=http://api
       - DM_SEARCH_API_URL=http://search-api
+      - DM_ANTIVIRUS_API_URL=http://antivirus-api
       - DM_APP_AUTH=ZGV2LXVzZXI6cGFzc3dvcmQxMjM0NQ==
       - DM_DOCUMENTS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
       - DM_G7_DRAFT_DOCUMENTS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
