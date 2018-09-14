@@ -3,10 +3,18 @@ SHELL := /bin/bash
 TEST_CONTAINER_NAME := digitalmarketplace_test_router
 TEST_IMAGE_NAME := digitalmarketplace/test-router
 
-.PHONY: create-cdn-route-service
-create-cdn-route-service:
+.PHONY: -generate-cdn-route-service-conf
+-generate-cdn-route-service-conf:
 	$(if ${DOMAIN},,$(error Must specify DOMAIN))
-	cf create-service cdn-route cdn-route router_cdn -c '{"headers": ["*"], "domain": "www.${DOMAIN},api.${DOMAIN},search-api.${DOMAIN},antivirus-api.${DOMAIN},assets.${DOMAIN}"}'
+	$(eval export CDN_ROUTE_SERVICE_CONF='{"headers": ["*"], "domain": "www.${DOMAIN},api.${DOMAIN},search-api.${DOMAIN},antivirus-api.${DOMAIN},assets.${DOMAIN}"}')
+
+.PHONY: update-cdn-route-service
+update-cdn-route-service: -generate-cdn-route-service-conf
+	cf update-service router_cdn -c ${CDN_ROUTE_SERVICE_CONF}
+
+.PHONY: create-cdn-route-service
+create-cdn-route-service: -generate-cdn-route-service-conf
+	cf create-service cdn-route cdn-route router_cdn -c ${CDN_ROUTE_SERVICE_CONF}
 
 .PHONY: docker-build
 docker-build:
