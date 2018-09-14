@@ -15,6 +15,7 @@ server {
     set $frontend_url "{{ frontend_url }}";
     set $agreements_s3_url "{{ agreements_s3_url }}";
     set $communications_s3_url "{{ communications_s3_url }}";
+    set $reports_s3_url "{{ reports_s3_url }}";
     set $submissions_s3_url "{{ submissions_s3_url }}";
 
     {{ prepare_trace_header_values() }}
@@ -60,6 +61,12 @@ server {
         proxy_intercept_errors on;
 
         proxy_pass $submissions_s3_url;
+    }
+
+    location ~ ^/[^/]+/reports/ {
+        proxy_intercept_errors on;
+
+        proxy_pass $reports_s3_url;
     }
 
     location /g-cloud-7 {
