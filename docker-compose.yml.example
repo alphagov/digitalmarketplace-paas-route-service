@@ -20,6 +20,7 @@ services:
       - DM_G7_DRAFT_DOCUMENTS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
       - DM_AGREEMENTS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
       - DM_COMMUNICATIONS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
+      - DM_REPORTS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
       - DM_SUBMISSIONS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
     command: >
       sed -i -e "s/proxy_redirect/# proxy_redirect/g" /app/templates/_macros.j2 &&

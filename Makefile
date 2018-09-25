@@ -45,6 +45,7 @@ test-nginx:
 		-e DM_G7_DRAFT_DOCUMENTS_S3_URL=https://test-s3 \
 		-e DM_AGREEMENTS_S3_URL=https://test-s3 \
 		-e DM_COMMUNICATIONS_S3_URL=https://test-s3 \
+		-e DM_REPORTS_S3_URL=https://test-s3 \
 		-e DM_SUBMISSIONS_S3_URL=https://test-s3 \
 		--name ${TEST_CONTAINER_NAME} \
 		-p 8080:8080 \
