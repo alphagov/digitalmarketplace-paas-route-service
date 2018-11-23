@@ -28,6 +28,9 @@ http {
     # Ignore trusted IPs in X-Forwarded-For
     real_ip_recursive on;
 
+    # merge multiple consecutive slashes to one
+    merge_slashes on;
+
     # a few good practice security headers
     add_header X-Content-Type-Options nosniff;
     add_header X-Xss-Protection "1; mode=block" always;
