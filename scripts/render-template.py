@@ -12,12 +12,23 @@ def load_file(path):
         return f.read()
 
 
+def ensure_trailing_slash(value):
+    """
+    jinja filter to add a trailing slash to value if not already present - particularly useful when passing an url
+    to the proxy_pass directive which behaves differently depending on whether a target address has an url "path" part
+    """
+    value = str(value)
+    return value if value.endswith("/") else value + "/"
+
+
 def template_string(string, variables, templates_path):
     jinja_env = jinja2.Environment(
         trim_blocks=True,
         undefined=StrictUndefined,
         loader=jinja2.FileSystemLoader(templates_path)
     )
+
+    jinja_env.filters["ensure_trailing_slash"] = ensure_trailing_slash
 
     try:
         template = jinja_env.from_string(string)
