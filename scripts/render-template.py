@@ -3,6 +3,9 @@
 
 import os
 import sys
+
+from six.moves.urllib.parse import urljoin
+
 import jinja2
 from jinja2.runtime import StrictUndefined
 
@@ -12,13 +15,13 @@ def load_file(path):
         return f.read()
 
 
-def ensure_trailing_slash(value):
+def _urljoin(base, url):
     """
-    jinja filter to add a trailing slash to value if not already present - particularly useful when passing an url
-    to the proxy_pass directive which behaves differently depending on whether a target address has an url "path" part
+    jinja filter to allow templates to perform a correct "url join". can also be used to conditionally add a trailing
+    slash to base if not already present - particularly useful when passing an url to the proxy_pass directive which
+    behaves differently depending on whether a target address has an url "path" part
     """
-    value = str(value)
-    return value if value.endswith("/") else value + "/"
+    return urljoin(base, url, allow_fragments=False)
 
 
 def template_string(string, variables, templates_path):
@@ -28,7 +31,7 @@ def template_string(string, variables, templates_path):
         loader=jinja2.FileSystemLoader(templates_path)
     )
 
-    jinja_env.filters["ensure_trailing_slash"] = ensure_trailing_slash
+    jinja_env.filters["urljoin"] = _urljoin
 
     try:
         template = jinja_env.from_string(string)

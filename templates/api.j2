@@ -13,12 +13,12 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass {{ api_url|ensure_trailing_slash }};
+        proxy_pass {{ api_url|urljoin("/") }};
     }
 
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass {{ api_url|ensure_trailing_slash }};
+        proxy_pass {{ api_url|urljoin("/callbacks") }};
     }
 }
 
@@ -35,7 +35,7 @@ server {
 
     location / {
         {{ proxy_headers() }}
-        proxy_pass {{ search_api_url|ensure_trailing_slash }};
+        proxy_pass {{ search_api_url|urljoin("/") }};
     }
 }
 
@@ -52,11 +52,11 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass {{ antivirus_api_url|ensure_trailing_slash }};
+        proxy_pass {{ antivirus_api_url|urljoin("/") }};
     }
 
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass {{ antivirus_api_url|ensure_trailing_slash }};
+        proxy_pass {{ antivirus_api_url|urljoin("/callbacks") }};
     }
 }
