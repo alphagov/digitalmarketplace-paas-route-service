@@ -36,17 +36,17 @@ test-nginx:
 		-e DM_USER_IPS=172.0.0.0 \
 		-e DM_DEV_USER_IPS=172.0.0.0 \
 		-e DM_ADMIN_USER_IPS=172.0.0.0 \
-		-e DM_FRONTEND_URL=http://frontend-apps \
+		-e DM_FRONTEND_URL=http://example.net \
 		-e DM_API_URL=http://localhost:5000 \
 		-e DM_SEARCH_API_URL=http://localhost:5001 \
 		-e DM_ANTIVIRUS_API_URL=http://localhost:5008 \
 		-e DM_APP_AUTH=12345678 \
-		-e DM_DOCUMENTS_S3_URL=https://test-s3 \
-		-e DM_G7_DRAFT_DOCUMENTS_S3_URL=https://test-s3 \
-		-e DM_AGREEMENTS_S3_URL=https://test-s3 \
-		-e DM_COMMUNICATIONS_S3_URL=https://test-s3 \
-		-e DM_REPORTS_S3_URL=https://test-s3 \
-		-e DM_SUBMISSIONS_S3_URL=https://test-s3 \
+		-e DM_DOCUMENTS_S3_URL=https://example.com \
+		-e DM_G7_DRAFT_DOCUMENTS_S3_URL=https://example.com \
+		-e DM_AGREEMENTS_S3_URL=https://example.com \
+		-e DM_COMMUNICATIONS_S3_URL=https://example.com \
+		-e DM_REPORTS_S3_URL=https://example.com \
+		-e DM_SUBMISSIONS_S3_URL=https://example.com \
 		--name ${TEST_CONTAINER_NAME} \
 		-p 8080:8080 \
 		-d -t ${TEST_IMAGE_NAME}

@@ -15,8 +15,6 @@ server {
     {% endfor %}
     deny all;
 
-    set $frontend_url "{{ frontend_url }}";
-
     # Basic rate limiting
     limit_req zone=dm_limit burst=40 nodelay;
     limit_req zone=dm_post_limit burst=5;
@@ -40,7 +38,7 @@ server {
         {{ proxy_headers () }}
         proxy_set_header Authorization "Basic {{ app_auth }}";
 
-        proxy_pass $frontend_url;
+        proxy_pass {{ frontend_url|ensure_trailing_slash }};
     }
 
     location /admin {
@@ -52,7 +50,7 @@ server {
         {{ proxy_headers () }}
         proxy_set_header Authorization "Basic {{ app_auth }}";
 
-        proxy_pass $frontend_url;
+        proxy_pass {{ frontend_url|ensure_trailing_slash }};
     }
 }
 

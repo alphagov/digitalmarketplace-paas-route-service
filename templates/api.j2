@@ -4,8 +4,6 @@ server {
     listen 80;
     server_name api.*;
 
-    set $api_url "{{ api_url }}";
-
     {{ prepare_trace_header_values() }}
 
     location / {
@@ -15,12 +13,12 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass $api_url;
+        proxy_pass {{ api_url|ensure_trailing_slash }};
     }
 
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass $api_url;
+        proxy_pass {{ api_url|ensure_trailing_slash }};
     }
 }
 
@@ -35,19 +33,15 @@ server {
 
     {{ prepare_trace_header_values() }}
 
-    set $search_api_url "{{ search_api_url }}";
-
     location / {
         {{ proxy_headers() }}
-        proxy_pass $search_api_url;
+        proxy_pass {{ search_api_url|ensure_trailing_slash }};
     }
 }
 
 server {
     listen 80;
     server_name antivirus-api.*;
-
-    set $antivirus_api_url "{{ antivirus_api_url }}";
 
     {{ prepare_trace_header_values() }}
 
@@ -58,11 +52,11 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass $antivirus_api_url;
+        proxy_pass {{ antivirus_api_url|ensure_trailing_slash }};
     }
 
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass $antivirus_api_url;
+        proxy_pass {{ antivirus_api_url|ensure_trailing_slash }};
     }
 }
