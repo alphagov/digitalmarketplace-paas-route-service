@@ -34,7 +34,8 @@ server {
         rewrite ^(.*)$ /robots_www.txt break;
     }
 
-    location ~ /metrics$ {
+    # Block access to Brief Response FE metrics path
+    location /suppliers/opportunities/metrics {
         deny all;
     }
 
