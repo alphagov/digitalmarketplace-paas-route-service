@@ -47,13 +47,23 @@ http {
     # Set max request size (up to 4 files x 10Mb size limit)
     client_max_body_size 40m;
 
-    # Basic rate limiting (return 429 Too Many Requests instead of default 503)
+    # Rate limiting (return 429 Too Many Requests instead of default 503)
     # Requests are by default limited to 50 requests/second, POST requests to 2 requests/second
     # Both limits also include a small burst allowance for extra requests in quick succession.
-    map $request_method $post_remote_addr {
-      default      "";
-      POST         $binary_remote_addr;
+
+    # Bypass rate limiting with `Rate-Limit-Token` headers.
+    map $http_Rate_Limit_Token $limit_req {
+      default                $binary_remote_addr;
+      {{ rate_limit_token }} "";
     }
+
+    # Create another rate limiting zone that only limits POST requests (without a token header)
+    map "$http_Rate_Limit_Token:$request_method" $post_remote_addr {
+      default                       "";
+      {{ rate_limit_token }}:POST   "";
+      ~:POST$                       $binary_remote_addr;
+    }
+
     limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=50r/s;
     limit_req_zone $post_remote_addr zone=dm_post_limit:10m rate=2r/s;
     limit_req_status 429;
