@@ -22,20 +22,21 @@ server {
     location / {
         proxy_intercept_errors on;
 
-        proxy_pass $documents_s3_url;
+        proxy_pass $documents_s3_url$request_uri;
     }
 
+    set $documents_documents_s3_url {{ documents_s3_url }};
     location ~ ^/[^/]+/documents/ {
         proxy_intercept_errors on;
 
-        proxy_pass $documents_s3_url;
+        proxy_pass $documents_s3_url$request_uri;
     }
 
     set $agreements_s3_url {{ agreements_s3_url }};
     location ~ ^/[^/]+/agreements/ {
         proxy_intercept_errors on;
 
-        proxy_pass $agreements_s3_url;
+        proxy_pass $agreements_s3_url$request_uri;
     }
 
     # Hack to force g7 communications to the old bucket to preserve upload times
@@ -43,44 +44,45 @@ server {
     location ^~ /g-cloud-7-updates/communications {
         proxy_intercept_errors on;
 
-        proxy_pass $g7_draft_documents_s3_url;
+        proxy_pass $g7_draft_documents_s3_url$request_uri;
     }
 
     set $communications_s3_url {{ communications_s3_url }};
     location ~ ^/[^/]+/communications/ {
         proxy_intercept_errors on;
 
-        proxy_pass $communications_s3_url;
+        proxy_pass $communications_s3_url$request_uri;
     }
 
     set $submissions_s3_url {{ submissions_s3_url }};
     location ~ ^/[^/]+/submissions/ {
         proxy_intercept_errors on;
 
-        proxy_pass $submissions_s3_url;
+        proxy_pass $submissions_s3_url$request_uri;
     }
 
     set $reports_s3_url {{ reports_s3_url }};
     location ~ ^/[^/]+/reports/ {
         proxy_intercept_errors on;
 
-        proxy_pass $reports_s3_url;
+        proxy_pass $reports_s3_url$request_uri;
     }
 
     location /g-cloud-7 {
         proxy_intercept_errors on;
 
-        proxy_pass  $g7_draft_documents_s3_url;
+        proxy_pass  $g7_draft_documents_s3_url$request_uri;
     }
 
-    set $frontend_url {{ frontend_url }};
+    set $frontend_404_url {{ frontend_url }};
     location /404 {
         {{ proxy_headers () }}
         proxy_set_header Authorization "Basic {{ app_auth }}";
-        proxy_pass $frontend_url;
+        proxy_pass $frontend_url$request_uri;
     }
 
+    set $frontend_static_url = {{ frontend_url }};
     location /static {
-        proxy_pass $frontend_url;
+        proxy_pass $frontend_static_url$request_uri;
     }
 }
