@@ -39,13 +39,14 @@ server {
         deny all;
     }
 
+    set $frontend_url {{ frontend_url|urljoin("/") }};
     location / {
         {{ proxy_headers () }}
         proxy_set_header Authorization "Basic {{ app_auth }}";
-
-        proxy_pass {{ frontend_url|urljoin("/") }};
+        proxy_pass $frontend_url;
     }
 
+    set $admin_frontend_url {{ frontend_url|urljoin("/admin") }};
     location /admin {
         {% for admin_ip in admin_user_ips.split(",") %}
         allow {{ admin_ip }};
@@ -55,7 +56,7 @@ server {
         {{ proxy_headers () }}
         proxy_set_header Authorization "Basic {{ app_auth }}";
 
-        proxy_pass {{ frontend_url|urljoin("/admin") }};
+        proxy_pass $admin_frontend_url;
     }
 }
 
