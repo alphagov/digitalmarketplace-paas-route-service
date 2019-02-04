@@ -6,7 +6,6 @@ server {
 
     {{ prepare_trace_header_values() }}
 
-    set $api_url {{ api_url|urljoin("/") }};
     location / {
         {% for dev_ip in dev_user_ips.split(",") %}
         allow {{ dev_ip }};
@@ -14,13 +13,12 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass $api_url;
+        proxy_pass {{ api_url|urljoin("/") }};
     }
 
-    set $api_callbacks_url {{ api_url|urljoin("/callbacks") }};
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass $api_callbacks_url;
+        proxy_pass {{ api_url|urljoin("/callbacks") }};
     }
 }
 
@@ -35,10 +33,9 @@ server {
 
     {{ prepare_trace_header_values() }}
 
-    set $search_api_url {{ search_api_url|urljoin("/") }};
     location / {
         {{ proxy_headers() }}
-        proxy_pass $search_api_url;
+        proxy_pass {{ search_api_url|urljoin("/") }};
     }
 }
 
@@ -48,7 +45,6 @@ server {
 
     {{ prepare_trace_header_values() }}
 
-    set $antivirus_api_url {{ antivirus_api_url|urljoin("/") }};
     location / {
         {% for dev_ip in dev_user_ips.split(",") %}
         allow {{ dev_ip }};
@@ -56,12 +52,11 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass $antivirus_api_url;
+        proxy_pass {{ antivirus_api_url|urljoin("/") }};
     }
 
-    set $antivirus_api_callbacks_url {{ antivirus_api_url|urljoin("/callbacks") }};
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass $antivirus_api_callbacks_url;
+        proxy_pass {{ antivirus_api_url|urljoin("/callbacks") }};
     }
 }
