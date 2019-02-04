@@ -18,7 +18,7 @@ server {
         alias {{ static_files_root }}/robots_assets.txt;
     }
 
-    set $documents_s3_url {{ documents_s3_url }};
+    set $documents_s3_url "{{ documents_s3_url }}";
     location / {
         proxy_intercept_errors on;
 
@@ -31,7 +31,7 @@ server {
         proxy_pass $documents_s3_url;
     }
 
-    set $agreements_s3_url {{ agreements_s3_url }};
+    set $agreements_s3_url "{{ agreements_s3_url }}";
     location ~ ^/[^/]+/agreements/ {
         proxy_intercept_errors on;
 
@@ -39,28 +39,28 @@ server {
     }
 
     # Hack to force g7 communications to the old bucket to preserve upload times
-    set $g7_draft_documents_s3_url {{ g7_draft_documents_s3_url }};
+    set $g7_draft_documents_s3_url "{{ g7_draft_documents_s3_url }}";
     location ^~ /g-cloud-7-updates/communications {
         proxy_intercept_errors on;
 
         proxy_pass $g7_draft_documents_s3_url;
     }
 
-    set $communications_s3_url {{ communications_s3_url }};
+    set $communications_s3_url "{{ communications_s3_url }}";
     location ~ ^/[^/]+/communications/ {
         proxy_intercept_errors on;
 
         proxy_pass $communications_s3_url;
     }
 
-    set $submissions_s3_url {{ submissions_s3_url }};
+    set $submissions_s3_url "{{ submissions_s3_url }}";
     location ~ ^/[^/]+/submissions/ {
         proxy_intercept_errors on;
 
         proxy_pass $submissions_s3_url;
     }
 
-    set $reports_s3_url {{ reports_s3_url }};
+    set $reports_s3_url "{{ reports_s3_url }}";
     location ~ ^/[^/]+/reports/ {
         proxy_intercept_errors on;
 
@@ -73,7 +73,7 @@ server {
         proxy_pass  $g7_draft_documents_s3_url;
     }
 
-    set $frontend_url {{ frontend_url }};
+    set $frontend_url "{{ frontend_url }}";
     location /404 {
         {{ proxy_headers () }}
         proxy_set_header Authorization "Basic {{ app_auth }}";
