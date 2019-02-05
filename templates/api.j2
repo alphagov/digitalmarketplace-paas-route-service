@@ -6,6 +6,7 @@ server {
 
     {{ prepare_trace_header_values() }}
 
+    set $api_url {{ api_url }};
     location / {
         {% for dev_ip in dev_user_ips.split(",") %}
         allow {{ dev_ip }};
@@ -13,12 +14,12 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass {{ api_url|urljoin("/") }};
+        proxy_pass $api_url$request_uri;
     }
 
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass {{ api_url|urljoin("/callbacks") }};
+        proxy_pass $api_url$request_uri;
     }
 }
 
@@ -33,9 +34,10 @@ server {
 
     {{ prepare_trace_header_values() }}
 
+    set $search_api_url {{ search_api_url }};
     location / {
         {{ proxy_headers() }}
-        proxy_pass {{ search_api_url|urljoin("/") }};
+        proxy_pass $search_api_url$request_uri;
     }
 }
 
@@ -45,6 +47,7 @@ server {
 
     {{ prepare_trace_header_values() }}
 
+    set $antivirus_api_url {{ antivirus_api_url }};
     location / {
         {% for dev_ip in dev_user_ips.split(",") %}
         allow {{ dev_ip }};
@@ -52,11 +55,11 @@ server {
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass {{ antivirus_api_url|urljoin("/") }};
+        proxy_pass $antivirus_api_url$request_uri;
     }
 
     location /callbacks {
         {{ proxy_headers() }}
-        proxy_pass {{ antivirus_api_url|urljoin("/callbacks") }};
+        proxy_pass $antivirus_api_url$request_uri;
     }
 }
