@@ -18,6 +18,13 @@ server {
         alias {{ static_files_root }}/robots_assets.txt;
     }
 
+    # Absolute matches
+    # We want to serve a blank favicon on this domain as we cannot guarantee the content it will appear above (service
+    # documents, user uploaded pdfs etc.). The blank favicon stops 404s propagating past this point.
+    location = /favicon.ico {
+        empty_gif;
+    }
+
     location / {
         proxy_intercept_errors on;
 
