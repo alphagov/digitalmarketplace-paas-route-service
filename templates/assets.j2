@@ -26,13 +26,13 @@ server {
     set $frontend_url {{ frontend_url }};
     set $static_files_root {{ static_files_root }};
 
-    location ^~ (^/g-cloud-7-updates/communications/?.*?) {
+    location ^~ (^/g-cloud-7-updates/communications($|/$|/.+$)) {
         proxy_intercept_errors on;
 
         proxy_pass $g7_draft_documents_s3_url$1$is_args$args;
     }
 
-    location ^~ (^/g-cloud-7/?.*?) {
+    location ^~ (^/g-cloud-7($|/$|/.+$)) {
         proxy_intercept_errors on;
 
         proxy_pass $g7_draft_documents_s3_url$1$is_args$args;
