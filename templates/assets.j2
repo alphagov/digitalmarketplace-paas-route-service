@@ -21,43 +21,42 @@ server {
         empty_gif;
     }
 
-    # Priority prefixes ^~ (force redirect to these exact prefixes)
+
+    # Case sensitive regex matches ~ (these are tried in order) ([^/] means any non-slash character)
     set $g7_draft_documents_s3_url {{ g7_draft_documents_s3_url }};
     set $frontend_url {{ frontend_url }};
     set $static_files_root {{ static_files_root }};
-
-    location ^~ (^/g-cloud-7-updates/communications($|/$|/.+$)) {
-        proxy_intercept_errors on;
-
-        proxy_pass $g7_draft_documents_s3_url$1$is_args$args;
-    }
-
-    location ^~ (^/g-cloud-7($|/$|/.+$)) {
-        proxy_intercept_errors on;
-
-        proxy_pass $g7_draft_documents_s3_url$1$is_args$args;
-    }
-
-    location ^~ (^/404) {
-        {{ proxy_headers () }}
-        proxy_set_header Authorization "Basic {{ app_auth }}";
-        proxy_pass $frontend_url$1$is_args$args;
-    }
-
-    location ^~ (^/static/?.*?) {
-        proxy_pass $frontend_url$1$is_args$args;
-    }
-
-    location ^~ (^/robots.txt) {
-        alias $static_files_root/robots_assets.txt;
-    }
-
-    # Case sensitive regex matches ~ (these are tried in order) ([^/] means any non-slash character)
     set $documents_s3_url {{ documents_s3_url }};
     set $agreements_s3_url {{ agreements_s3_url }};
     set $communications_s3_url {{ communications_s3_url }};
     set $submissions_s3_url {{ submissions_s3_url }};
     set $reports_s3_url {{ reports_s3_url }};
+
+    location ~ (^/g-cloud-7-updates/communications($|/$|/.+$)) {
+        proxy_intercept_errors on;
+
+        proxy_pass $g7_draft_documents_s3_url$1$is_args$args;
+    }
+
+    location ~ (^/g-cloud-7($|/$|/.+$)) {
+        proxy_intercept_errors on;
+
+        proxy_pass $g7_draft_documents_s3_url$1$is_args$args;
+    }
+
+    location ~ (^/404$) {
+        {{ proxy_headers () }}
+        proxy_set_header Authorization "Basic {{ app_auth }}";
+        proxy_pass $frontend_url$1$is_args$args;
+    }
+
+    location ~ (^/static($|/$|/.+$)) {
+        proxy_pass $frontend_url$1$is_args$args;
+    }
+
+    location ~ (^/robots.txt$) {
+        alias $static_files_root/robots_assets.txt;
+    }
 
     location ~ (^/[^/]+/documents/.*) {
         proxy_intercept_errors on;
