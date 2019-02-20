@@ -47,7 +47,7 @@ http {
     # Set max request size (up to 4 files x 10Mb size limit)
     client_max_body_size 40m;
 
-{% if rate_limiting_enabled %}
+{% if rate_limiting_enabled == "enabled" %}
     # Basic rate limiting (return 429 Too Many Requests instead of default 503)
     # Requests are by default limited to 50 requests/second, POST requests to 2 requests/second
     # Both limits also include a small burst allowance for extra requests in quick succession.
