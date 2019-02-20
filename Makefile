@@ -47,7 +47,7 @@ test-nginx:
 		-e DM_COMMUNICATIONS_S3_URL=https://example.com \
 		-e DM_REPORTS_S3_URL=https://example.com \
 		-e DM_SUBMISSIONS_S3_URL=https://example.com \
-		-e DM_RATE_LIMITING_ENABLED=true \
+		-e DM_RATE_LIMITING_ENABLED=enabled \
 		--name ${TEST_CONTAINER_NAME} \
 		-p 8080:8080 \
 		-d -t ${TEST_IMAGE_NAME}

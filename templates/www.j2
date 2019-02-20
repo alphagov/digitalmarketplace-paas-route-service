@@ -15,7 +15,7 @@ server {
     {% endfor %}
     deny all;
 
-{% if rate_limiting_enabled %}
+{% if rate_limiting_enabled == "enabled" %}
     # Basic rate limiting
     limit_req zone=dm_limit burst=40 nodelay;
     limit_req zone=dm_post_limit burst=5;
@@ -61,7 +61,7 @@ server {
     }
 }
 
-{% if rate_limiting_enabled %}
+{% if rate_limiting_enabled == "enabled" %}
 # Listen on port 10823 and serve a static_429_error page
 server {
     listen 10823;
