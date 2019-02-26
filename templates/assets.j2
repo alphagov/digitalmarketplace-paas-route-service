@@ -19,6 +19,7 @@ server {
     # documents, user uploaded pdfs etc.). The blank favicon stops 404s propagating past this point.
     location = /favicon.ico {
         empty_gif;
+        default_type image/x-icon;
     }
 
 
