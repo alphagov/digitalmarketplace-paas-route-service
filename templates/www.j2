@@ -9,6 +9,8 @@ server {
     listen 80;
     server_name www.*;
     root {{ static_files_root }};
+    # valid= value must be significantly less than the amount of guard time we have in our blue-green deployment process
+    resolver {{ resolver_ip }} valid=10s;
 
     {% for user_ip in user_ips.split(",") %}
     allow {{ user_ip }};

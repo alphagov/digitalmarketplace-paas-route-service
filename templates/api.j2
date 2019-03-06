@@ -3,6 +3,8 @@
 server {
     listen 80;
     server_name api.*;
+    # valid= value must be significantly less than the amount of guard time we have in our blue-green deployment process
+    resolver {{ resolver_ip }} valid=10s;
 
     {{ prepare_trace_header_values() }}
 
@@ -25,6 +27,8 @@ server {
 server {
     listen 80;
     server_name search-api.*;
+    # valid= value must be significantly less than the amount of guard time we have in our blue-green deployment process
+    resolver {{ resolver_ip }} valid=10s;
 
     {% for dev_ip in dev_user_ips.split(",") %}
     allow {{ dev_ip }};
@@ -42,6 +46,8 @@ server {
 server {
     listen 80;
     server_name antivirus-api.*;
+    # valid= value must be significantly less than the amount of guard time we have in our blue-green deployment process
+    resolver {{ resolver_ip }} valid=10s;
 
     {{ prepare_trace_header_values() }}
 
