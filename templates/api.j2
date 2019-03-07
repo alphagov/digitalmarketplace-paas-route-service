@@ -3,28 +3,34 @@
 server {
     listen 80;
     server_name api.*;
+    # valid= value must be significantly less than the amount of guard time we have in our blue-green deployment process
+    resolver {{ resolver_ip }} valid=10s;
 
     {{ prepare_trace_header_values() }}
 
-    location / {
+    set $api_url {{ api_url }};
+
+    location ~ (^/callbacks(/.*)?) {
+        {{ proxy_headers() }}
+        proxy_pass $api_url$1$is_args$args;
+    }
+
+    location ~ (/.*) {
         {% for dev_ip in dev_user_ips.split(",") %}
         allow {{ dev_ip }};
         {% endfor %}
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass {{ api_url|urljoin("/") }};
-    }
-
-    location /callbacks {
-        {{ proxy_headers() }}
-        proxy_pass {{ api_url|urljoin("/callbacks") }};
+        proxy_pass $api_url$1$is_args$args;
     }
 }
 
 server {
     listen 80;
     server_name search-api.*;
+    # valid= value must be significantly less than the amount of guard time we have in our blue-green deployment process
+    resolver {{ resolver_ip }} valid=10s;
 
     {% for dev_ip in dev_user_ips.split(",") %}
     allow {{ dev_ip }};
@@ -33,30 +39,36 @@ server {
 
     {{ prepare_trace_header_values() }}
 
-    location / {
+    set $search_api_url {{ search_api_url }};
+
+    location ~ (/.*) {
         {{ proxy_headers() }}
-        proxy_pass {{ search_api_url|urljoin("/") }};
+        proxy_pass $search_api_url$1$is_args$args;
     }
 }
 
 server {
     listen 80;
     server_name antivirus-api.*;
+    # valid= value must be significantly less than the amount of guard time we have in our blue-green deployment process
+    resolver {{ resolver_ip }} valid=10s;
 
     {{ prepare_trace_header_values() }}
 
-    location / {
+    set $antivirus_api_url {{ antivirus_api_url }};
+
+    location ~ (^/callbacks(/.*)?) {
+        {{ proxy_headers() }}
+        proxy_pass $antivirus_api_url$1$is_args$args;
+    }
+
+    location ~ (/.*) {
         {% for dev_ip in dev_user_ips.split(",") %}
         allow {{ dev_ip }};
         {% endfor %}
         deny all;
 
         {{ proxy_headers() }}
-        proxy_pass {{ antivirus_api_url|urljoin("/") }};
-    }
-
-    location /callbacks {
-        {{ proxy_headers() }}
-        proxy_pass {{ antivirus_api_url|urljoin("/callbacks") }};
+        proxy_pass $antivirus_api_url$1$is_args$args;
     }
 }
