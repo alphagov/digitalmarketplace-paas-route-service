@@ -87,6 +87,11 @@ http {
 
     # Logging Settings
 
+    map $content_length $content_length_or_zero {
+        default $content_length;
+        "" 0;
+    }
+
     log_format access_json '{"logType": "nginx-access", '
                            ' "requestId": "$http_x_b3_traceid", '
                            ' "spanId": "$http_x_b3_spanid", '
@@ -100,7 +105,7 @@ http {
                            ' "request": "$request", '
                            ' "status": $status, '
                            ' "size": $body_bytes_sent, '
-                           ' "requestSize": $content_length, '
+                           ' "requestSize": $content_length_or_zero, '
                            ' "referer": "$http_referer", '
                            ' "userAgent": "$http_user_agent", '
                            ' "requestTime": $request_time, '
