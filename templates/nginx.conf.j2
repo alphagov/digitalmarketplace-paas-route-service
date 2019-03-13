@@ -88,8 +88,8 @@ http {
     # Logging Settings
 
     map $content_length $content_length_or_zero {
-        default $content_length;
-        "" 0;
+        default 0;
+        ~^\d+$ $content_length;
     }
 
     log_format access_json escape=json '{"logType": "nginx-access", '
