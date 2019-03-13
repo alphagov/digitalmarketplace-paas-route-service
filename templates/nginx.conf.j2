@@ -92,7 +92,7 @@ http {
         "" 0;
     }
 
-    log_format access_json '{"logType": "nginx-access", '
+    log_format access_json escape=json '{"logType": "nginx-access", '
                            ' "requestId": "$http_x_b3_traceid", '
                            ' "spanId": "$http_x_b3_spanid", '
                            ' "parentSpanId": "$http_x_b3_parentspanid", '
