@@ -92,6 +92,7 @@ http {
         ~^\d+$ $content_length;
     }
 
+    # the various $upstream_*_times are encoded as strings as they potentially could be multiple values comma-separated
     log_format access_json escape=json '{"logType": "nginx-access", '
                            ' "requestId": "$http_x_b3_traceid", '
                            ' "spanId": "$http_x_b3_spanid", '
@@ -109,6 +110,9 @@ http {
                            ' "referer": "$http_referer", '
                            ' "userAgent": "$http_user_agent", '
                            ' "requestTime": $request_time, '
+                           ' "upstreamConnectTime": "$upstream_connect_time", '
+                           ' "upstreamHeaderTime": "$upstream_header_time", '
+                           ' "upstreamResponseTime": "$upstream_response_time", '
                            ' "httpHost": "$http_host"}';
 
     access_log /dev/stdout access_json;
