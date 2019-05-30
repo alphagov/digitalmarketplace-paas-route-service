@@ -2,6 +2,7 @@
 *
 
 !awslogs
+!nginx-prometheus-exporter.sh
 !nginx.sh
 !scripts/
 !requirements.txt
