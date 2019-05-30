@@ -6,9 +6,9 @@ export DM_RESOLVER_IP=$(awk '/nameserver/{ print $2; exit}' /etc/resolv.conf)
 /app/scripts/render-template.py /app/templates/nginx.conf.j2 > /etc/nginx/nginx.conf
 
 if [[ $DM_MODE == 'maintenance' ]]; then
-    templates="maintenance healthcheck metrics"
+    templates="maintenance healthcheck"
 else
-    templates="api assets www healthcheck metrics"
+    templates="api assets www healthcheck"
 fi
 
 for template in $templates; do
