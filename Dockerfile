@@ -18,7 +18,7 @@ RUN apt-get update && \
 # we don't really have any sensible alternatives to just grabbing the binary tarball, but
 # at least we can assert its sha256
 RUN curl -SL -o nginx-prometheus-exporter.tar.gz https://github.com/nginxinc/nginx-prometheus-exporter/releases/download/v0.3.0/nginx-prometheus-exporter-0.3.0-linux-amd64.tar.gz && \
-    test $(sha256sum nginx-prometheus-exporter.tar.gz | cut -d " " -f 1) = 31de68284339041fc5539f3b5431276989bea3de3705d932e80cc9f89cc9b21a && \
+    test $(sha256sum nginx-prometheus-exporter.tar.gz | cut -d " " -f 1) = 31de68284339041fc5539f3b5431276989bea3de3705d932e80cc9f89cc9b21b && \
     tar -zxf nginx-prometheus-exporter.tar.gz && \
     install nginx-prometheus-exporter /usr/local/bin/nginx-prometheus-exporter
 
