@@ -1,8 +1,19 @@
 server {
     listen 9112 default_server;
 
+    allow 127.0.0.1;
+    deny all;
+
     location /stub-status {
         stub_status;
         access_log off;
+    }
+}
+
+server {
+    listen 80;
+
+    location /_metrics/ {
+        proxy_pass http://127.0.0.1:9113;
     }
 }
