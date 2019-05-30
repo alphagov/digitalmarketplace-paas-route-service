@@ -1,0 +1,8 @@
+server {
+    listen 9112 default_server;
+
+    location /stub-status {
+        stub_status;
+        access_log off;
+    }
+}
