@@ -4,7 +4,7 @@ ENV APP_DIR /app
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-                    python2.7 python-setuptools python-pip && \
+                    python2.7 python-setuptools python-pip curl && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir supervisor==3.3.3 awscli awscli-cwlogs && \
     aws configure set plugins.cwlogs cwlogs && \
