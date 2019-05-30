@@ -9,7 +9,7 @@ server {
         return 200 'nginx healthcheck status ok\n';
     }
 
-    location /_router_metrics/ {
+    location /_metrics {
         proxy_pass http://127.0.0.1:9113;
     }
 }
