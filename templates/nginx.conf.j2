@@ -56,15 +56,15 @@ http {
       POST         $binary_remote_addr;
     }
     map $binary_remote_addr $truncated_remote_addr {
-      default      $binary_remote_addr;
-      ~^(?<prefix>.{3}).*$   $prefix;
-      ~^(?<prefix>.{6}).{10}$   $prefix;
+      default                     $binary_remote_addr;
+      "~^(?<prefix>.{3}).*$"      $prefix;
+      "~^(?<prefix>.{6}).{10}$"   $prefix;
     }
     map $post_remote_addr $truncated_post_remote_addr {
-      default      $post_remote_addr;
-      ""           "";
-      ~^(?<prefix>.{3}).$   $prefix;
-      ~^(?<prefix>.{6}).{10}$   $prefix;
+      default                     $post_remote_addr;
+      ""                          "";
+      "~^(?<prefix>.{3}).$"       $prefix;
+      "~^(?<prefix>.{6}).{10}$"   $prefix;
     }
     limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=50r/s;
     limit_req_zone $post_remote_addr zone=dm_post_limit:10m rate=2r/s;
