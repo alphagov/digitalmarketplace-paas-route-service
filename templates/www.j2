@@ -19,6 +19,8 @@ server {
     # Basic rate limiting
     limit_req zone=dm_limit burst=40;
     limit_req zone=dm_post_limit burst=5;
+    limit_req zone=dm_subnet_limit burst=120;
+    limit_req zone=dm_subnet_post_limit burst=15;
 
     error_page 429 @too_many_requests;
     location @too_many_requests {
