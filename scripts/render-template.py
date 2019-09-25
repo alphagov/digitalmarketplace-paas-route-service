@@ -26,6 +26,10 @@ def _urljoin(base, url):
 
 def template_string(string, variables, templates_path):
     jinja_env = jinja2.Environment(
+        autoescape=False,
+        # the jinja templates have no user input and are used to generate config files
+        # we are not confident that autoescaping will be useful here and we have therefore taken a positive decision
+        # to turn it off
         trim_blocks=True,
         undefined=StrictUndefined,
         loader=jinja2.FileSystemLoader(templates_path)
