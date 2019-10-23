@@ -120,13 +120,6 @@ http {
 
     access_log /dev/stdout access_json;
 
-    # Gzip Settings
-
-    gzip on;
-    gzip_disable "msie6";
-    gzip_types text/css application/javascript;
-    gzip_proxied any;
-
     # Virtual Host Configs
 
     include /etc/nginx/sites-enabled/*;
