@@ -38,7 +38,7 @@ test-nginx:
 		-e DM_ADMIN_USER_IPS=172.0.0.0 \
 		-e DM_FRONTEND_URL=http://example.net \
 		-e DM_API_URL=http://localhost:5000 \
-		-e DM_SEARCH_API_URL=http://localhost:5001 \
+		-e DM_SEARCH_API_URL=http://localhost:5009 \
 		-e DM_ANTIVIRUS_API_URL=http://localhost:5008 \
 		-e DM_APP_AUTH=12345678 \
 		-e DM_DOCUMENTS_S3_URL=https://example.com \
