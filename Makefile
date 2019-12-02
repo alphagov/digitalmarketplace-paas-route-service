@@ -1,4 +1,5 @@
 SHELL := /bin/bash
+VIRTUALENV_ROOT := $(shell [ -z $$VIRTUAL_ENV ] && echo $$(pwd)/venv || echo $$VIRTUAL_ENV)
 
 TEST_CONTAINER_NAME := digitalmarketplace_test_router
 TEST_IMAGE_NAME := digitalmarketplace/test-router
@@ -64,3 +65,15 @@ test-nginx:
 docker-push:
 	$(if ${RELEASE_NAME},,$(eval export RELEASE_NAME=$(shell git describe)))
 	docker push digitalmarketplace/router:${RELEASE_NAME}
+
+.PHONY: virtualenv
+virtualenv:
+	[ -z $$VIRTUAL_ENV ] && [ ! -d venv ] && python3 -m venv venv || true
+
+.PHONY: upgrade-pip
+upgrade-pip: virtualenv
+	${VIRTUALENV_ROOT}/bin/pip install --upgrade pip
+
+.PHONY: requirements
+requirements: virtualenv upgrade-pip requirements.txt
+	${VIRTUALENV_ROOT}/bin/pip install -r requirements.txt

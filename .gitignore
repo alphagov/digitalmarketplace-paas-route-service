@@ -1,2 +1,5 @@
 .envrc
 docker-compose.yml
+venv*
+*.pyc
+__pycache__
