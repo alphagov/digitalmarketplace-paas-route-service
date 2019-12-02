@@ -1,16 +1,13 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-try:
-    from urllib.request import urlopen
-except ImportError:
-    from urllib2 import urlopen
 import json
+import requests
 
 
 def main():
-    response = urlopen('https://ip-ranges.amazonaws.com/ip-ranges.json').read()
-    ranges = json.loads(response)['prefixes']
+    response = requests.get('https://ip-ranges.amazonaws.com/ip-ranges.json')
+    ranges = json.loads(response.content)['prefixes']
 
     return [i['ip_prefix'] for i in ranges if i['service'] == 'CLOUDFRONT']
 
