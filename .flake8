@@ -1,0 +1,5 @@
+[flake8]
+# Rule definitions: http://flake8.pycqa.org/en/latest/user/error-codes.html
+exclude = venv*,__pycache__,.git
+max-complexity = 12
+max-line-length = 120

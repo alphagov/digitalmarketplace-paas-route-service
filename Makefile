@@ -77,3 +77,7 @@ upgrade-pip: virtualenv
 .PHONY: requirements
 requirements: virtualenv upgrade-pip requirements.txt
 	${VIRTUALENV_ROOT}/bin/pip install -r requirements.txt
+
+.PHONY: requirements-dev
+requirements-dev: virtualenv requirements-dev.txt
+	${VIRTUALENV_ROOT}/bin/pip install -r requirements-dev.txt
