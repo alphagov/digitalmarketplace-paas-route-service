@@ -4,7 +4,7 @@ ENV APP_DIR /app
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-                    python2.7 python-setuptools python-pip curl && \
+                    python3 python3-virtualenv python-setuptools python-pip curl && \
     rm -rf /var/lib/apt/lists/* && \
     pip install --no-cache-dir supervisor==3.3.3 awscli awscli-cwlogs && \
     aws configure set plugins.cwlogs cwlogs && \
@@ -24,7 +24,10 @@ RUN curl -SL -o nginx-prometheus-exporter.tar.gz https://github.com/nginxinc/ngi
     rm -f nginx-prometheus-exporter nginx-prometheus-exporter.tar.gz
 
 COPY requirements.txt ${APP_DIR}
-RUN pip install -r ${APP_DIR}/requirements.txt
+
+RUN python3 -m virtualenv --python=/usr/bin/python3 ${APP_DIR}/venv
+RUN ${APP_DIR}/venv/bin/pip install --upgrade pip
+RUN ${APP_DIR}/venv/bin/pip install -r ${APP_DIR}/requirements.txt
 
 COPY static_files/* /usr/share/nginx/html/
 
