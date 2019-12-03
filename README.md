@@ -108,7 +108,7 @@ Assuming you have [Docker](https://docs.docker.com/engine/installation/) and [do
   5. Once the container has started successfully, nginx should be listening on the URL and port you configured,
   e.g. http://localhost:80/robots.txt should show a static page.
 
-  6. Once you're done, clean up the image and container with `docker-compose down`. To stop the container without removing it,
+  6. Once you are done, clean up the image and container with `docker-compose down`. To stop the container without removing it,
   use `docker-compose stop`.
 
 **Caveat:** This method is less than ideal for locally testing frontend app routing. In production, PaaS handles this automagically
