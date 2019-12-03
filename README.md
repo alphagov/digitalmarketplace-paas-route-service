@@ -111,7 +111,7 @@ Assuming you have [Docker](https://docs.docker.com/engine/installation/) and [do
   6. Once you're done, clean up the image and container with `docker-compose down`. To stop the container without removing it,
   use `docker-compose stop`.
 
-**Caveat:** This method is not ideal for locally testing frontend app routing. In production, PaaS handles this automagically
+**Caveat:** This method is less than ideal for locally testing frontend app routing. In production, PaaS handles this automagically
 as the frontend apps are all on the same host - [more info about this is available on the DM manual](https://alphagov.github.io/digitalmarketplace-manual/application-architecture.html?highlight=routing#overall-architecture)).
 
 More info on `docker-compose` commands: https://docs.docker.com/compose/reference/overview/
