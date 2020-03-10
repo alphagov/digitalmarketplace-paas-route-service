@@ -1,9 +1,15 @@
 {% from "_macros.j2" import proxy_headers with context %}
 {% from "_macros.j2" import prepare_trace_header_values with context %}
 
-upstream static_429_error {
-    server localhost:10823;
+{% if rate_limiting_enabled == "enabled" %}
+# Define the static page server that serves our 429 error page (listen on 10823)
+server {
+    listen 10823;
+    server_name _;
+    root {{ static_files_root }};
+    rewrite ^(.*)$ /too_many_requests.html break;
 }
+{% endif %}
 
 server {
     listen 80;
@@ -16,18 +22,23 @@ server {
     deny all;
 
 {% if rate_limiting_enabled == "enabled" %}
-    # Basic rate limiting
+    # Apply rate limiting to requests on this (www) server
     limit_req zone=dm_limit burst=40;
     limit_req zone=dm_post_limit burst=5;
 
-    error_page 429 @too_many_requests;
+    # Define a new location "@too_many_requests" which will proxy as a GET to localhost:10823
     location @too_many_requests {
         add_header Retry-After 300 always;
 
         # Cannot POST to static pages, so proxy to a dedicated server block using GET
         proxy_method GET;
-        proxy_pass http://static_429_error;
+        proxy_pass http://localhost:10823;
     }
+
+    # Direct 429 errors to the @too_many_requests location because we return 429 errors for rate limit errors
+    # (see nginx.conf)
+    error_page 429 @too_many_requests;
+
 {% endif %}
 
     {{ prepare_trace_header_values() }}
@@ -62,13 +73,3 @@ server {
         proxy_pass $frontend_url$1$is_args$args;
     }
 }
-
-{% if rate_limiting_enabled == "enabled" %}
-# Listen on port 10823 and serve a static_429_error page
-server {
-    listen 10823;
-    server_name _;
-    root {{ static_files_root }};
-    rewrite ^(.*)$ /too_many_requests.html break;
-}
-{% endif %}

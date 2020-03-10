@@ -52,15 +52,21 @@ http {
 
 {% if rate_limiting_enabled == "enabled" %}
     # Basic rate limiting (return 429 Too Many Requests instead of default 503)
-    # Requests are by default limited to 50 requests/second, POST requests to 2 requests/second
-    # None of these default limits include a burst. A burst is included in the www.j2 template
+    limit_req_status 429;
+
+    # Create a new variable for each request, $post_remote_addr which should be blank for anything other than a post
+    # $post_remote_addr = $binary_remote_addr if $request_method == "POST" else ""
     map $request_method $post_remote_addr {
       default      "";
       POST         $binary_remote_addr;
     }
+
+    # Create 2 zones, one that will match all requests, one only for posts
+    # http://nginx.org/en/docs/http/ngx_http_limit_req_module.html#limit_req_zone
+    # These must be applied within a server block to have any effect
     limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=50r/s;
     limit_req_zone $post_remote_addr zone=dm_post_limit:10m rate=2r/s;
-    limit_req_status 429;
+
 {% endif %}
 
     # Set variable indicating to strip out trace/debug headers coming from external (non-GDS/non-dev) IPs
