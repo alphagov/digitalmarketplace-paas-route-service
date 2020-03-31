@@ -115,3 +115,15 @@ Assuming you have [Docker](https://docs.docker.com/engine/installation/) and [do
 as the frontend apps are all on the same host - [more info about this is available on the DM manual](https://alphagov.github.io/digitalmarketplace-manual/application-architecture.html?highlight=routing#overall-architecture)).
 
 More info on `docker-compose` commands: https://docs.docker.com/compose/reference/overview/
+
+## Licence
+
+Unless stated otherwise, the codebase is released under [the MIT License][mit].
+This covers both the codebase and any sample code in the documentation.
+
+The documentation is [&copy; Crown copyright][copyright] and available under the terms
+of the [Open Government 3.0][ogl] licence.
+
+[mit]: LICENCE
+[copyright]: http://www.nationalarchives.gov.uk/information-management/re-using-public-sector-information/uk-government-licensing-framework/crown-copyright/
+[ogl]: http://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/
