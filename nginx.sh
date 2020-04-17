@@ -5,6 +5,8 @@ export DM_RESOLVER_IP=$(awk '/nameserver/{ print $2; exit}' /etc/resolv.conf)
 
 if [[ $DM_MODE == 'maintenance' ]]; then
     templates="maintenance healthcheck metrics"
+elif [[ $DM_MODE == 'recovery' ]]; then
+    templates="api maintenance healthcheck metrics"
 else
     templates="api assets www healthcheck metrics"
 fi
