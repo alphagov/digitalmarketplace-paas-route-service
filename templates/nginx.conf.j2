@@ -52,13 +52,13 @@ http {
 
 {% if rate_limiting_enabled == "enabled" %}
     # Basic rate limiting (return 429 Too Many Requests instead of default 503)
-    # Requests are by default limited to 50 requests/second, POST requests to 2 requests/second
+    # Requests are by default limited to 30 requests/second, POST requests to 2 requests/second
     # None of these default limits include a burst. A burst is included in the www.j2 template
     map $request_method $post_remote_addr {
       default      "";
       POST         $binary_remote_addr;
     }
-    limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=50r/s;
+    limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=30r/s;
     limit_req_zone $post_remote_addr zone=dm_post_limit:10m rate=2r/s;
     limit_req_status 429;
 {% endif %}
