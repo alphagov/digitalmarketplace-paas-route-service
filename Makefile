@@ -74,7 +74,7 @@ virtualenv:
 requirements-dev: virtualenv requirements-dev.txt
 	${VIRTUALENV_ROOT}/bin/pip install -r requirements-dev.txt
 
-test: show-environment test-flake8 test-python
+test: requirements-dev test-flake8 test-python test-nginx
 
 test-flake8: virtualenv
 	${VIRTUALENV_ROOT}/bin/flake8 .
