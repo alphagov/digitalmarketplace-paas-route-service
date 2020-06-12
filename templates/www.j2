@@ -17,7 +17,7 @@ server {
 
 {% if rate_limiting_enabled == "enabled" %}
     # Basic rate limiting
-    limit_req zone=dm_limit burst=40;
+    limit_req zone=dm_limit burst=30;
     limit_req zone=dm_post_limit burst=5;
 
     error_page 429 @too_many_requests;
