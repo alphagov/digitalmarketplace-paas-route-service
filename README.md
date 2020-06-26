@@ -38,6 +38,14 @@ encrypted
 these variables are coming from the [credentials
 repo](https://github.com/alphagov/digitalmarketplace-credentials).  
 
+### IP safelist variables
+
+The router uses three sets of IPs to restrict access to certain areas of the Digital Marketplace:
+
+- `DM_ADMIN_USER_IPS`: allowed access to the Admin Frontend app (for all environments)
+- `DM_USER_IPS`: allowed access to Preview and Staging environments
+- `DM_DEV_USER_IPS`: allowed direct access to the three API apps (auth required)
+
 ## Testing nginx changes locally
 
 There are two ways to test changes to the nginx configuration:
