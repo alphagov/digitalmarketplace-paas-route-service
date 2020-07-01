@@ -30,6 +30,11 @@ def setup_env(monkeypatch):
 
 class TestRenderNginxTemplates:
 
+    def test_render_nginx_template_with_no_env_vars_raises_value_error(self):
+        with pytest.raises(ValueError) as exc:
+            render_nginx_template("templates/api.j2")
+        assert "Variable 'resolver_ip' is undefined" in str(exc.value)
+
     def test_render_nginx_template_api(self, setup_env):
         api_template = render_nginx_template("templates/api.j2")
         assert "server_name api.*" in api_template
