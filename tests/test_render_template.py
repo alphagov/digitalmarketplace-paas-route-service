@@ -1,5 +1,5 @@
 import pytest
-from scripts.script_helpers.render_template_helpers import render_nginx_template
+from scripts.render_template import render_nginx_template
 
 DUMMY_ENV_VARS = [
     ("DM_RESOLVER_IP", "172.0.0.0"),

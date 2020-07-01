@@ -13,10 +13,10 @@ fi
 
 for template in $templates; do
     echo "Compiling $template" >&2
-    /app/scripts/render-template.py /app/templates/$template.j2 > /etc/nginx/sites-enabled/$template.conf
+    /app/scripts/render_template.py /app/templates/$template.j2 > /etc/nginx/sites-enabled/$template.conf
 done
 
 # generate nginx.conf last so its existence can be used to detect readiness by e.g. tests
-/app/scripts/render-template.py /app/templates/nginx.conf.j2 > /etc/nginx/nginx.conf
+/app/scripts/render_template.py /app/templates/nginx.conf.j2 > /etc/nginx/nginx.conf
 
 exec /usr/sbin/nginx

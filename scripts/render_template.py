@@ -1,6 +1,9 @@
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+
+import sys
 import os
 from six.moves.urllib.parse import urljoin
-
 import jinja2
 from jinja2.runtime import StrictUndefined
 
@@ -60,3 +63,7 @@ def render_nginx_template(template_path):
             variables=variables,
             templates_path=os.path.dirname(template_path)
         )
+
+
+if __name__ == "__main__":
+    print(render_nginx_template(sys.argv[1]))
