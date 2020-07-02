@@ -1,2 +1,7 @@
+*.pyc
+__pycache__/
+.pytest_cache/
+.cache
 .envrc
 docker-compose.yml
+venv*

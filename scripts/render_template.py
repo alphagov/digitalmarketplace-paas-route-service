@@ -1,11 +1,9 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
-import os
 import sys
-
+import os
 from six.moves.urllib.parse import urljoin
-
 import jinja2
 from jinja2.runtime import StrictUndefined
 
@@ -48,7 +46,7 @@ def template_string(string, variables, templates_path):
         raise ValueError(u"Variable {} in '{}'".format(e, string))
 
 
-def main(template_name):
+def render_nginx_template(template_path):
     variables = {
         key.replace('DM_', '').lower(): value
         for key, value in os.environ.items()
@@ -59,13 +57,13 @@ def main(template_name):
         'static_files_root': '/usr/share/nginx/html'
     })
 
-    with open(template_name, 'r') as template_file:
+    with open(template_path, 'r') as template_file:
         return template_string(
             template_file.read(),
             variables=variables,
-            templates_path=os.path.dirname(template_name)
+            templates_path=os.path.dirname(template_path)
         )
 
 
 if __name__ == "__main__":
-    print(main(sys.argv[1]))
+    print(render_nginx_template(sys.argv[1]))

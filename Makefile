@@ -64,3 +64,20 @@ test-nginx:
 docker-push:
 	$(if ${RELEASE_NAME},,$(eval export RELEASE_NAME=$(shell git describe)))
 	docker push digitalmarketplace/router:${RELEASE_NAME}
+
+# Python test recipes
+VIRTUALENV_ROOT := $(shell [ -z $$VIRTUAL_ENV ] && echo $$(pwd)/venv || echo $$VIRTUAL_ENV)
+
+virtualenv:
+	[ -z $$VIRTUAL_ENV ] && [ ! -d venv ] && python3 -m venv venv || true
+
+requirements-dev: virtualenv requirements-dev.txt
+	${VIRTUALENV_ROOT}/bin/pip install -r requirements-dev.txt
+
+test: requirements-dev test-flake8 test-python test-nginx
+
+test-flake8: virtualenv
+	${VIRTUALENV_ROOT}/bin/flake8 .
+
+test-python: virtualenv
+	${VIRTUALENV_ROOT}/bin/py.test ${PYTEST-ARGS}
