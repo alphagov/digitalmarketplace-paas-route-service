@@ -22,7 +22,10 @@ services:
       - DM_COMMUNICATIONS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
       - DM_REPORTS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
       - DM_SUBMISSIONS_S3_URL=https://digitalmarketplace-dev-uploads.s3.amazonaws.com
+      - DM_RATE_LIMITING_ENABLED=disabled
     command: >
+      bash -c '
       sed -i -e "s/proxy_redirect/# proxy_redirect/g" /app/templates/_macros.j2 &&
       sed -i -e "s/www\.\*/localhost/g" /app/templates/www.j2 &&
-      supervisord --configuration /etc/supervisord.conf'
+      supervisord --configuration /etc/supervisord.conf
+      '
