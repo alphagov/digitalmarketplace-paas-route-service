@@ -32,7 +32,7 @@ server {
 
     {{ prepare_trace_header_values() }}
 
-    location /robots.txt {
+    location = /robots.txt {
         rewrite ^(.*)$ /robots_www.txt break;
     }
 
