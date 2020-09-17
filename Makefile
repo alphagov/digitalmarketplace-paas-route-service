@@ -51,7 +51,7 @@ test-nginx:
 		--name ${TEST_CONTAINER_NAME} \
 		-p 8080:8080 \
 		-d -t ${TEST_IMAGE_NAME}
-	@docker exec -d ${TEST_CONTAINER_NAME} supervisord --configuration /etc/supervisord.conf
+
 	@echo "## Waiting for nginx to start..."
 
 	@docker exec ${TEST_CONTAINER_NAME} timeout 10m sh -c "until (test -s /etc/nginx/nginx.conf && (service nginx status >dev/null || ! nginx -t > /dev/null 2>&1)); do sleep 1; done && nginx -t"
