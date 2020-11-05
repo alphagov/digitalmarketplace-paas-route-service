@@ -58,7 +58,7 @@ http {
       default      "";
       POST         $binary_remote_addr;
     }
-    limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=30r/s;
+    limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=15r/s;
     limit_req_zone $post_remote_addr zone=dm_post_limit:10m rate=2r/s;
     limit_req_status 429;
 {% endif %}
