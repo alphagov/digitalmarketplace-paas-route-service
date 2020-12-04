@@ -1,4 +1,4 @@
-FROM nginx:1.16
+FROM nginx:1.19.5
 
 ENV APP_DIR /app
 
