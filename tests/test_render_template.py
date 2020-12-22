@@ -71,12 +71,6 @@ class TestRenderNginxTemplates:
         assert "allow 172.0.0.2" in maintenance
         assert "allow 172.1.1.2" in maintenance
 
-    def test_render_nginx_template_metrics(self, setup_env):
-        metrics_template = render_nginx_template("templates/metrics.j2")
-        assert "server_name *.cloudapps.digital" in metrics_template
-        assert "location /_metrics" in metrics_template
-        assert "location /stub-status" in metrics_template
-
     def test_render_nginx_template_nginx_conf_rate_limiting_enabled(self, setup_env):
         nginx_conf_template = render_nginx_template("templates/nginx.conf.j2")
         assert "resolver 172.0.0.0 valid=300s;" in nginx_conf_template
