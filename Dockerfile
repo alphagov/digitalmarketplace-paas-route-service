@@ -4,9 +4,9 @@ ENV APP_DIR /app
 
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
-                    python2.7 python-setuptools python-pip && \
+                    python3.7 python3-setuptools python3-pip && \
     rm -rf /var/lib/apt/lists/* && \
-    pip install --no-cache-dir supervisor==3.3.3 awscli awscli-cwlogs && \
+    pip3 install --no-cache-dir supervisor==4.2.1 awscli awscli-cwlogs && \
     aws configure set plugins.cwlogs cwlogs && \
     mkdir -p ${APP_DIR} && \
     mkdir -p /etc/nginx/sites-available && \
@@ -16,7 +16,7 @@ RUN apt-get update && \
     rm -f /etc/nginx/nginx.conf /etc/nginx/sites-enabled/*
 
 COPY requirements.txt ${APP_DIR}
-RUN pip install -r ${APP_DIR}/requirements.txt
+RUN pip3 install -r ${APP_DIR}/requirements.txt
 
 COPY static_files/* /usr/share/nginx/html/
 
