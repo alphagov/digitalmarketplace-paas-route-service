@@ -59,10 +59,10 @@ http {
       default      "";
       POST         $binary_remote_addr;
     }
-    # Requests are by default limited to 5 requests/second/router instance, POST requests to 2
+    # Requests are by default limited to 3 requests/second/router instance, POST requests to 2
     # requests/second/router instance.
     # As of February 2021, there are normally 6 router instances.
-    limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=5r/s;
+    limit_req_zone $binary_remote_addr zone=dm_limit:10m rate=3r/s;
     limit_req_zone $post_remote_addr zone=dm_post_limit:10m rate=2r/s;
     limit_req_status 429;
 {% endif %}
