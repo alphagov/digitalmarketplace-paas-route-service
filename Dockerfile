@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
                     python3.7 python3-setuptools python3-pip && \
     rm -rf /var/lib/apt/lists/* && \
-    pip3 install --no-cache-dir supervisor==4.2.1 awscli awscli-cwlogs && \
+    pip3 install --no-cache-dir supervisor==4.2.2 awscli awscli-cwlogs && \
     aws configure set plugins.cwlogs cwlogs && \
     mkdir -p ${APP_DIR} && \
     mkdir -p /etc/nginx/sites-available && \
