@@ -22,6 +22,8 @@ COPY static_files/* /usr/share/nginx/html/
 
 COPY awslogs/awslogs.conf /etc/awslogs.conf
 COPY awslogs/run.sh /awslogs.sh
+COPY supervisor_stdout.py /usr/local/lib/python3.6/site-packages
+COPY supervisor_stdout.py /usr/local/bin/supervisor_stdout
 
 COPY supervisord.conf /etc/supervisord.conf
 
