@@ -6,7 +6,7 @@ RUN apt-get update && \
     apt-get install -y --no-install-recommends \
                     python3.7 python3-setuptools python3-pip && \
     rm -rf /var/lib/apt/lists/* && \
-    pip3 install --no-cache-dir supervisor==4.2.1 awscli awscli-cwlogs && \
+    pip3 install --no-cache-dir supervisor==4.2.2 awscli awscli-cwlogs && \
     aws configure set plugins.cwlogs cwlogs && \
     mkdir -p ${APP_DIR} && \
     mkdir -p /etc/nginx/sites-available && \
@@ -22,6 +22,8 @@ COPY static_files/* /usr/share/nginx/html/
 
 COPY awslogs/awslogs.conf /etc/awslogs.conf
 COPY awslogs/run.sh /awslogs.sh
+COPY supervisor_stdout.py /usr/local/lib/python3.6/site-packages
+COPY supervisor_stdout.py /usr/local/bin/supervisor_stdout
 
 COPY supervisord.conf /etc/supervisord.conf
 
